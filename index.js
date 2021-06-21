@@ -34,7 +34,6 @@ function log(request, response, next){
 
 app.use(log);
 app.use('/api/', cors(origin), router);
-app.use('/api/', cors(origin), router)
 
 app.use('/services', expressJwt({secret: 'secret', algorithms: ['HS256']}), cors(origin), router);
 

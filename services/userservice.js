@@ -17,6 +17,10 @@ class UserService {
         });
     }
 
+    async findById(id){
+        return this.usermdodel.findByPk(id);
+    }
+
     async findByEmail(email) {
         return this.usermdodel.findOne(
             {

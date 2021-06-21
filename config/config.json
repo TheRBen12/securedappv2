@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "lamav418",
-    "database": "gatewayservice",
+    "database": "securedappv2",
     "host": "127.0.0.1",
     "dialect": "mysql"
 

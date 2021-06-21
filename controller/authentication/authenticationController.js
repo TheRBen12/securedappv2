@@ -2,8 +2,6 @@ const {UserService} = require("../../services/userservice");
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
 
-
-
 class AuthenticationController {
 
     userService;
@@ -13,11 +11,25 @@ class AuthenticationController {
         this.router['post']('/authenticate', (req, res) => {
             this.authenticate(req, res);
         });
+        this.router['get']('/account', (req, res) => {
+            this.fetchCurrentUser(req, res);
+        });
     }
 
     constructor(router) {
         this.router = router;
         this.userService = new UserService();
+    }
+
+    fetchCurrentUser(request, response){
+        const options = {
+            userId: request.user.id
+        }
+       this.userService.findById(options.userId).then((user) => {
+           if (user){
+               response.json(user);
+           }
+       })
     }
 
     authenticate(request, response) {
