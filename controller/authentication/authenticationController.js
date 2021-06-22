@@ -46,6 +46,7 @@ class AuthenticationController {
                             delete payload.password;
                             const token = jwt.sign(payload, 'secret');
                             response.cookie('accessToken', token)
+                           console.log(response.headers);
                             response.json({token: token, user: payload});
                         }
                     } else {

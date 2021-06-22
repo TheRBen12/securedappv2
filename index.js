@@ -5,22 +5,46 @@ const eurekaRegistration = require('./eureka')
 const expressJwt = require('express-jwt');
 const jwtVerification = require('./controller/authentication/tokenVerification')
 const router = require('./controller/')
+const http = require('http');
+
+const https = require('https');
+const fs = require('fs');
 
 
-/*eurekaRegistration().start((error) => {
-    if (error){
-        console.log(error);
-    }
-})
+const app = express();
 
- */
+const options = {
+    key: fs.readFileSync('C:/Users/rbren/localhost.key'),
+    cert: fs.readFileSync('C:/Users/rbren/localhost.cert'),
+}
 
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(options, app)
+
+
+//Default cors options
 const origin = {
     origin: 'http://localhost:4200',
     credentials: true
 };
 
-const app = express();
+//Angular Clients
+const whitelist = ['https://localhost:4200', 'http://localhost:4200'];
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
+}
+
+eurekaRegistration().start((error) => {
+    if (error){
+        console.log(error);
+    }
+})
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.urlencoded());
@@ -43,6 +67,12 @@ app.use(function (err, request, response, next) {
     }
 });
 
-app.listen(8081, () => console.log("server has started"));
+
+httpServer.listen(8082, () => {
+    console.log("http server has started")
+});
+httpsServer.listen(8081, () => {
+    console.log("https server has started")
+});
 
 

@@ -26,7 +26,6 @@ class RegistrationController{
             }).then((savedUser) => {
                 if (savedUser){
                     delete savedUser.password;
-                    response.json(savedUser);
                     response.status(201).json(savedUser);
                 }else{
                     response.status(500);
